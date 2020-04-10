@@ -5,7 +5,8 @@ const router = express.Router()
 const Event = require('../models/Event')
 const Stats = require('../models/Stats')
 
-router.post('/', async (req, res) => {
+//Updates the point database with a link
+router.post('/', (req, res) => {
     
     Event.exists({url: req.body.url}).then(exists => {
         if (!exists){
@@ -58,7 +59,8 @@ router.post('/', async (req, res) => {
             
                         });
             
-                        Stats.findOneAndUpdate({name: 'stats'},statsObj.stats).catch( err => {
+                        Stats.findOneAndUpdate({name: 'stats'},statsObj, {useFindAndModify: false}).catch( err => {
+                            console.log(err)
                             res.json({message:err})
                             return
                         })
@@ -85,13 +87,6 @@ router.post('/', async (req, res) => {
             res.json({message: "URL already processed"})
         }
     })
-        
-        
-    
-
-
-
-    
 })
 
 module.exports = router;
