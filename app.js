@@ -26,4 +26,4 @@ mongoose.connect(
     process.env.DB_CONNECTION, { useNewUrlParser: true, useUnifiedTopology: true } ,
      () => console.log('connected to MongoDB Atlas'))
 
-app.listen(3000);
+app.listen(process.env.PORT);
