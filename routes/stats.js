@@ -15,7 +15,7 @@ router.get('/', async (req,res) => {
 })
 
 //Returns top filtered stats
-router.get('/:filterName', async (req,response) => {
+router.get('/filter/:filterName', async (req,response) => {
     Stats.findOne({ name: 'stats'}).then( res =>{
         var stats = res.stats
         Filter.findOne({ name: req.params.filterName }).then( res => {
