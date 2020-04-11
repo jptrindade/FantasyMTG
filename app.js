@@ -15,10 +15,12 @@ app.use(function(req, res, next) {
 const statsRoute = require('./routes/stats');
 const playersRoute = require('./routes/players');
 const updateRoute = require('./routes/update');
+const filtersRoute = require('./routes/filters');
 
 app.use('/stats', statsRoute)
 app.use('/players', playersRoute)
 app.use('/update', updateRoute)
+app.use('/filters', filtersRoute)
 
 // Routes
 app.get('/', (req,res) => {

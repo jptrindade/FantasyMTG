@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const Stats = require('../models/Stats')
 const Player = require('../models/Player')
-
+const Filter = require('../models/Filter')
 
 //Returns all stats
 router.get('/', async (req,res) => {
@@ -13,6 +13,20 @@ router.get('/', async (req,res) => {
         res.json({message:err})
     }
 })
+
+//Returns top filtered stats
+router.get('/:filterName', async (req,response) => {
+    Stats.findOne({ name: 'stats'}).then( res =>{
+        var stats = res.stats
+        Filter.findOne({ name: req.params.filterName }).then( res => {
+            var filter = res.to_include
+            
+            var newStats = stats.filter(item => filter.includes(item.card))
+            response.json(newStats)
+        })
+    })
+})
+
 
 //Creates stats
 router.post('/', async (req, res) => {
@@ -32,18 +46,21 @@ router.post('/', async (req, res) => {
 
 //Get points of player
 router.get('/:playerName', (req, response) => {
-    var playerPoints = 0
     Player.findOne({ name: req.params.playerName}).then(res =>{
         var player = res
         Stats.findOne({ name: 'stats'}).then( res =>{
             var statsObj = res
+            var myResponse = {}
+            myResponse['points'] = 0
             player.picks.forEach(pick => {
-                var index =statsObj.stats.findIndex(el => el.card == pick)
+                var index = statsObj.stats.findIndex(el => el.card == pick)
                 if (index > -1){
-                    playerPoints += statsObj.stats[index].points
+                    myResponse['points'] += statsObj.stats[index].points
+                    myResponse[pick] = statsObj.stats[index].points
                 }
+                else myResponse[pick] = 0
             })
-            response.json({points: playerPoints})
+            response.json(myResponse)
         }).catch(err => {
             res.json({message:err})
             return
