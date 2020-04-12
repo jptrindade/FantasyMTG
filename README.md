@@ -13,6 +13,7 @@ A fantasy league for Magic The Gathering cards
 Returns all players and their picks.
 + ### POST: /players
 `body: { "name": "Example name", "picks": ["Black Lotus", "Storm Crow"]}` 
+
 Creates a player with its starting picks.
 + ### GET: /stats
 Returns the **stats** collection.
@@ -20,6 +21,15 @@ Returns the **stats** collection.
 Creates an empty **stats** collection on the database.
 + ### GET: /stats/:playerName
 Returns the points of a player.
++ ### GET: /filters
+Returns a list of all the available filters
++ ### POST: /filters
+`body: { "name": "Example filter", "to_include": ["Black Lotus", "Storm Crow"]}`
+ 
+Creates a filter.
++ ### GET: /stats/filter/:filterName
+Returns the points of a player with the applied filter.
+
 + ### POST: /update
 `body: { "url": "https://magic.wizards.com/en/articles/archive/mtgo-standings/standard-preliminary-2020-04-10" }`
 Updates the stats table to include data from an event.
