@@ -33,7 +33,7 @@ router.get('/filter/:filterName', async (req,response) => {
 
 
 //Creates stats
-router.post('/', async (req, res) => {
+router.post('/', async (req, response) => {
     const stats = new Stats({
         name: 'stats',
         stats: []
@@ -41,9 +41,9 @@ router.post('/', async (req, res) => {
 
     try{
         const savedStats = await stats.save()
-        res.json(savedStats)
+        response.json(savedStats)
     }catch(err){
-        res.json({message: err})
+        response.json({message: err})
     }
     
 })
@@ -66,11 +66,11 @@ router.get('/:playerName', (req, response) => {
             })
             response.json(myResponse)
         }).catch(err => {
-            res.json({message:err})
+            response.json({message:err})
             return
         })
     }).catch(err => {
-        res.json({message:err})
+        response.json({message:err})
         return
     })
     
