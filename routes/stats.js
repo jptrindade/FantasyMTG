@@ -7,8 +7,8 @@ const Filter = require('../models/Filter')
 //Returns all stats
 router.get('/', async (req,res) => {
     try{
-        const stats = await Stats.find()
-        res.json(stats)
+        const statsObj = await Stats.find()
+        res.json(statsObj[0].stats)
     }catch(err){
         res.json({message:err})
     }
@@ -19,6 +19,10 @@ router.get('/filter/:filterName', async (req,response) => {
     Stats.findOne({ name: 'stats'}).then( res =>{
         var stats = res.stats
         Filter.findOne({ name: req.params.filterName }).then( res => {
+            if(res == null){
+                response.json(stats)
+                return
+            } 
             var filter = res.to_include
             
             var newStats = stats.filter(item => filter.includes(item.card))
